@@ -39,13 +39,14 @@ public class recipeFinderExtension {
     }
     
     public void search(){
-        String query = 'SELECT Name, Ingredients__c FROM Recipe__c';
+        String query = 'SELECT Name, Ingredients__c, Dietary_Restrictions__c FROM Recipe__c';
         Boolean hasIng = requiredIngredients.size() > 0;
         Boolean hasDR = requiredDietaryRestrictions.size() > 0;
         
         if(hasIng || hasDR) {
             query += ' WHERE ';
-            query += ingredientsFilter();   
+            query += ingredientsFilter();
+            
             if(hasIng && hasDR){
                 query += ' AND ';
             }
@@ -61,7 +62,7 @@ public class recipeFinderExtension {
             return '';              
         }
         String s = String.join(requiredIngredients, ';');
-        return 'Recipe_c.Ingredients__c INCLUDES (\'' + s + '\')';
+        return 'Ingredients__c INCLUDES (\'' + s + '\')';
     }
 
     private String dietaryRestrictionsFilter() {
@@ -69,7 +70,7 @@ public class recipeFinderExtension {
             return '';              
         }
         String s = String.join(requiredDietaryRestrictions, ';');
-        return 'Recipe_c.Dietary_Restrictions__c INCLUDES (\'' + s  + '\')';
+        return 'Dietary_Restrictions__c INCLUDES (\'' + s  + '\')';
     }
 
 }
